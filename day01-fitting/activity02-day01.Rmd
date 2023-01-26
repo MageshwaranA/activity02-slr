@@ -6,3 +6,16 @@ output: github_document
 ```{setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
+```{r}
+library(tidyverse)
+library(tidymodels)
+library(dplyr)
+hfi <- readr::read_csv("https://www.openintro.org/data/csv/hfi.csv")
+hfi_2016 <- filter(hfi,year == 2016)
+
+
+```
+
+```{r}
+```
