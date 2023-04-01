@@ -6,7 +6,7 @@ output: github_document
 ```{setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-
+The dataset contains 1620 rows and 120 columns. Each row represents the Human Freedom Index score for a particular country and year, along with various sub-indices and component scores.
 ```{r}
 library(tidyverse)
 library(tidymodels)
@@ -16,6 +16,20 @@ hfi_2016 <- filter(hfi,year == 2016)
 
 
 ```
-
+To display the relationship between the personal freedom score (pf_score) and pf_expression_control, a scatter plot would be appropriate. This would allow us to visualize any patterns or trends in the data and identify any potential outliers.
 ```{r}
+
+ggplot(hfi_2016, aes(x = pf_expression_control, y = pf_score)) +
+  geom_point()
 ```
+
+Based on the scatter plot, the relationship between pf_expression_control and pf_score does not appear to be perfectly linear. There seems to be a general decreasing trend in pf_score as pf_expression_control increases, but there is also a lot of variation in the data and some outliers.
+
+If we knew a country's pf_expression_control score, it may not be appropriate to use a linear model to predict its pf_score. We would need to assess the linearity assumption and potential outliers in the data, and consider alternative modeling approaches if necessary.
+```{r}
+
+m1 <- lm(pf_score ~ pf_expression_control, data = hfi_2016)
+tidy(m1)
+```
+The y-intercept (4.28) represents the predicted value of pf_score when pf_expression_control is zero. This intercept value is not meaningful in the context of the data, as there are no countries with a pf_expression_control score of zero. Therefore, it's important to interpret the intercept with caution and not over-interpret its meaning.
+The slope (0.542) represents the predicted change in pf_score for every one-unit increase in pf_expression_control. In other words, on average, countries with a one-unit higher pf_expression_control score are predicted to have a 0.542-point higher pf_score. This suggests a positive association between pf_expression_control and pf_score, where higher levels of political pressures and controls on media content are associated with higher levels of personal freedom. However, it's important to note that correlation does not imply causation and other factors could be influencing the relationship
